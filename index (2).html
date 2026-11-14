@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VOETWALL® Product Registration</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      background: #000; color: #fff;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    [hidden] { display: none !important; }
+    .wrap {
+      min-height: 100%; max-width: 480px; margin: 0 auto;
+      padding: 48px 24px 24px; display: flex; flex-direction: column;
+    }
+    .brand { margin-bottom: 56px; }
+    .brand h1 {
+      font-size: clamp(40px, 12vw, 60px); font-weight: 900;
+      letter-spacing: -0.03em; line-height: 1;
+    }
+    .brand sup { font-size: 0.3em; vertical-align: super; letter-spacing: 0; }
+    .tagline { margin-top: 12px; font-size: 13px; font-weight: 700; letter-spacing: 0.2em; }
+    .title {
+      font-size: 15px; font-weight: 800; letter-spacing: 0.15em;
+      padding-bottom: 16px; margin-bottom: 28px; border-bottom: 2px solid #fff;
+    }
+    label { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.15em; margin-bottom: 8px; }
+    input {
+      width: 100%; padding: 14px 0; margin-bottom: 24px;
+      background: transparent; border: 0; border-bottom: 1px solid #fff;
+      border-radius: 0; color: #fff; font-size: 16px; outline: none;
+    }
+    input::placeholder { color: #666; }
+    input:focus { border-bottom-width: 3px; padding-bottom: 12px; }
+    .error { font-size: 13px; font-weight: 700; margin-bottom: 20px; padding: 12px; border: 1px solid #fff; }
+    button, .btn {
+      display: block; width: 100%; padding: 18px; text-align: center;
+      background: #fff; color: #000; border: 2px solid #fff;
+      font-size: 14px; font-weight: 800; letter-spacing: 0.15em;
+      text-decoration: none; cursor: pointer; transition: background .15s, color .15s;
+    }
+    button:hover, .btn:hover { background: #000; color: #fff; }
+    .btn.ghost { background: #000; color: #fff; }
+    .btn.ghost:hover { background: #fff; color: #000; }
+    .label { font-size: 12px; font-weight: 700; letter-spacing: 0.15em; color: #9a9a9a; }
+    .serial {
+      margin: 20px 0 24px; padding: 32px 8px; border: 2px solid #fff; text-align: center;
+      font-size: clamp(34px, 11vw, 52px); font-weight: 900; letter-spacing: 0.06em; user-select: all;
+    }
+    .done { font-size: 14px; color: #cfcfcf; margin-bottom: 32px; }
+    .social { margin-top: 48px; padding-top: 24px; border-top: 1px solid #333; }
+    .social p { font-size: 12px; font-weight: 700; letter-spacing: 0.15em; margin-bottom: 14px; }
+    .social .btn { margin-bottom: 10px; }
+    footer { margin-top: auto; padding-top: 48px; font-size: 11px; letter-spacing: 0.15em; color: #666; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="brand">
+      <h1>VOETWALL<sup>®</sup></h1>
+      <p class="tagline">MLG OUR HOME GROUNDS.</p>
+    </header>
+
+    <!-- FORM -->
+    <section id="form-view">
+      <h2 class="title">PRODUCT REGISTRATION</h2>
+      <form id="reg-form" novalidate>
+        <label for="email">EMAIL</label>
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+        <p id="error" class="error" role="alert" hidden></p>
+        <button type="submit">GET REGISTRATION NUMBER</button>
+      </form>
+    </section>
+
+    <!-- HASIL -->
+    <section id="result-view" hidden>
+      <h2 class="title">REGISTRATION SUCCESSFUL</h2>
+      <p class="label">YOUR VOETWALL REGISTRATION NUMBER</p>
+      <p id="serial" class="serial">VW-000000</p>
+      <p class="done">Your registration has been successfully recorded.</p>
+      <button type="button" id="copy-btn">COPY SERIAL NUMBER</button>
+
+      <div class="social">
+        <p>FOLLOW VOETWALL®</p>
+        <a class="btn ghost" href="https://www.instagram.com/voetwall_" target="_blank" rel="noopener">INSTAGRAM @VOETWALL_</a>
+        <a class="btn ghost" href="https://www.tiktok.com/@voetwall_" target="_blank" rel="noopener">TIKTOK @VOETWALL_</a>
+      </div>
+    </section>
+
+    <footer>© VOETWALL®</footer>
+  </main>
+
+  <script>
+    // Kata rahasia. Boleh diganti sekali sebelum website diluncurkan,
+    // tetapi JANGAN diganti lagi sesudahnya, karena nomor seri akan berubah.
+    var SECRET = 'VOETWALL-2026';
+
+    // Mengubah teks menjadi angka acak yang selalu sama untuk teks yang sama.
+    function hash(str) {
+      var h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+      for (var i = 0; i < str.length; i++) {
+        var ch = str.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+      }
+      h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+      h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+      return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+    }
+
+    function makeSerial(email) {
+      var n = hash(SECRET + '|' + email) % 900000 + 100000;
+      return 'VW-' + n;
+    }
+
+    var form = document.getElementById('reg-form');
+    var errorEl = document.getElementById('error');
+    var serialEl = document.getElementById('serial');
+    var copyBtn = document.getElementById('copy-btn');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = document.getElementById('email').value.trim().toLowerCase();
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errorEl.textContent = 'Please enter a valid email address.';
+        errorEl.hidden = false;
+        return;
+      }
+      errorEl.hidden = true;
+      serialEl.textContent = makeSerial(email);
+      document.getElementById('form-view').hidden = true;
+      document.getElementById('result-view').hidden = false;
+      window.scrollTo(0, 0);
+    });
+
+    copyBtn.addEventListener('click', function () {
+      var text = serialEl.textContent;
+      function done() {
+        copyBtn.textContent = 'COPIED ✓';
+        setTimeout(function () { copyBtn.textContent = 'COPY SERIAL NUMBER'; }, 2000);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else { fallback(); }
+      function fallback() {
+        var range = document.createRange();
+        range.selectNodeContents(serialEl);
+        var sel = window.getSelection();
+        sel.removeAllRanges(); sel.addRange(range);
+        document.execCommand('copy');
+        done();
+      }
+    });
+  </script>
+</body>
+</html>
